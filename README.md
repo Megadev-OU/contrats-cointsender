@@ -1,13 +1,25 @@
-# Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
+# Installation
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
+npm i 
+npm run compile 
+```
+
+# Deploy
+
+1. Set keys for deploy in .env
+```code
+    See structure in .env.example
+```
+
+2. Set address for owner in  deploy.js
+
+```code
+    const ownerAddress = '0x123abc'
+```
+
+3. Run command
+
+ ```shell
+   npm run deploy
 ```
