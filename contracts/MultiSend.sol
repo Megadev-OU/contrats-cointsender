@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MultiSend is Ownable{
@@ -48,15 +49,15 @@ contract MultiSend is Ownable{
         for (uint256 i = 0; i < recipients.length; i++) {
             require(amounts[i] > 0);
             currentSum = currentSum + amounts[i];
-            require(currentSum <= ERC20(token).balanceOf(msg.sender));
+            require(currentSum <= IERC20(token).balanceOf(msg.sender));
         }
 
         for (uint256 i = 0; i < recipients.length; i++) {
             newSumAfterFee[i] = amounts[i] - fee[i];
             taxes += fee[i];
-            ERC20(token).transferFrom(msg.sender, recipients[i], newSumAfterFee[i]);
+            SafeERC20.safeTransferFrom(IERC20(token), msg.sender, recipients[i], newSumAfterFee[i]);
         }
-        ERC20(token).transferFrom(msg.sender, Ownable.owner(), taxes);
+        SafeERC20.safeTransferFrom(IERC20(token), msg.sender, Ownable.owner(), taxes);
     }
 
 }
