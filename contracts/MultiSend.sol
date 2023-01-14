@@ -3,9 +3,14 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MultiSend is Ownable{
+contract MultiSend {
+    address public owner;
+
+    // Defining a constructor
+    constructor(address _owner) {
+        owner = _owner;
+    }
 
     function multiSendDiffEth(
         address payable[] memory recipients,
@@ -30,7 +35,7 @@ contract MultiSend is Ownable{
             taxes += fee[i];
             recipients[i].transfer(newSumAfterFee[i]);
         }
-        payable(Ownable.owner()).transfer(taxes);
+        payable(owner).transfer(taxes);
     }
 
     function multiSendDiffToken(
@@ -57,7 +62,7 @@ contract MultiSend is Ownable{
             taxes += fee[i];
             SafeERC20.safeTransferFrom(IERC20(token), msg.sender, recipients[i], newSumAfterFee[i]);
         }
-        SafeERC20.safeTransferFrom(IERC20(token), msg.sender, Ownable.owner(), taxes);
+        SafeERC20.safeTransferFrom(IERC20(token), msg.sender, owner, taxes);
     }
 
 }
