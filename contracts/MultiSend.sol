@@ -18,7 +18,7 @@ contract MultiSend {
         _;
     }
 
-    function multiSendDiffEth(uint256 _percent) public isOwner {
+    function changePercentage(uint256 _percent) public isOwner {
         percent = _percent;
     }
 
