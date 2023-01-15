@@ -2,9 +2,12 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract MultiSend {
+    using SafeMath for uint256;
+    using SafeERC20 for ERC20;
     address public owner;
     uint256 public percent;
     // Defining a constructor
@@ -28,7 +31,6 @@ contract MultiSend {
     ) public payable {
         require(recipients.length > 0);
         require(recipients.length == amounts.length);
-        uint256[] memory newSumAfterFee;
 
         uint256 currentSum = 0;
         uint256 taxes = 0;
@@ -36,41 +38,35 @@ contract MultiSend {
         for (uint256 i = 0; i < recipients.length; i++) {
             require(amounts[i] > 0);
             currentSum = currentSum + amounts[i];
+            uint256 FEE = amounts[i].mul(percent).div(10000);
+            uint256 _amount = amounts[i].sub(FEE);
             require(currentSum <= msg.value);
-        }
-
-        for (uint256 i = 0; i < recipients.length; i++) {
-            newSumAfterFee[i] = amounts[i] - (amounts[i] * percent / 10000);  // 100 - (100 * 10 / 10000) = 99.9
-            taxes += (amounts[i] / 10000 * percent);  // (100 * 10 / 10000) = 0.1
-            recipients[i].transfer(newSumAfterFee[i]);
+            taxes = taxes + FEE;
+            recipients[i].transfer(_amount);
         }
         payable(owner).transfer(taxes);
     }
 
     function multiSendDiffToken(
-        address payable[] memory recipients,
+        address[] memory recipients,
         uint256[] memory amounts,
         address token
     ) public {
         require(recipients.length > 0);
         require(recipients.length == amounts.length);
-        uint256[] memory newSumAfterFee;
 
         uint256 currentSum = 0;
         uint256 taxes = 0;
-
         for (uint256 i = 0; i < recipients.length; i++) {
             require(amounts[i] > 0);
             currentSum = currentSum + amounts[i];
-            require(currentSum <= IERC20(token).balanceOf(msg.sender));
+            uint256 FEE = amounts[i].mul(percent).div(10000);
+            uint256 _amount = amounts[i].sub(FEE);
+            require(currentSum <= ERC20(token).balanceOf(msg.sender));
+            taxes = taxes + FEE;
+            ERC20(token).safeTransferFrom(msg.sender, recipients[i], _amount);
         }
-
-        for (uint256 i = 0; i < recipients.length; i++) {
-            newSumAfterFee[i] = amounts[i] - (amounts[i] * percent / 10000);  // 100 - (100 * 10 / 10000) = 99.9
-            taxes += (amounts[i] / 10000 * percent);  // (100 * 10 / 10000) = 0.1
-            SafeERC20.safeTransferFrom(IERC20(token), msg.sender, recipients[i], newSumAfterFee[i]);
-        }
-        SafeERC20.safeTransferFrom(IERC20(token), msg.sender, owner, taxes);
+         ERC20(token).safeTransferFrom(msg.sender, owner, taxes);
     }
 
 }
