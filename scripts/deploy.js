@@ -2,7 +2,7 @@ const hre = require("hardhat");
 
 async function main() {
     const MultiSend = await hre.ethers.getContractFactory("MultiSend");
-    const multiSend = await MultiSend.deploy(ownerAddress);
+    const multiSend = await MultiSend.deploy();
     await multiSend.deployed();
 
     console.log(`multiSend deployed to ${multiSend.address}`);

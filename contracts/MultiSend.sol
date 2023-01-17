@@ -13,8 +13,6 @@ contract MultiSend is Ownable{
         percent = 10; // 0.1%
     }
 
-
-
     function changePercentage(uint256 _percent) public onlyOwner {
         percent = _percent;
     }
