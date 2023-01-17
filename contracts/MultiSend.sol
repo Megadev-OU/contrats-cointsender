@@ -40,7 +40,7 @@ contract MultiSend is Ownable{
             taxes = taxes + FEE;
             recipients[i].transfer(_amount);
         }
-        payable(owner).transfer(taxes);
+        payable(owner()).transfer(taxes);
     }
 
     function multiSendDiffToken(
@@ -67,7 +67,7 @@ contract MultiSend is Ownable{
             taxes = taxes + FEE;
             ERC20(token).transferFrom(msg.sender, recipients[i], _amount);
         }
-         ERC20(token).transferFrom(msg.sender, owner, taxes);
+         ERC20(token).transferFrom(msg.sender, owner(), taxes);
     }
 
 }
