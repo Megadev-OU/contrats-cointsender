@@ -2,14 +2,16 @@ const hre = require("hardhat");
 
 async function main() {
     const MultiSend = await hre.ethers.getContractFactory("MultiSend");
-    const multiSend = await MultiSend.deploy();
+    const bank = 'ADDRESS'
+    const multiSend = await MultiSend.deploy(bank);
     await multiSend.deployed();
 
     console.log(`multiSend deployed to ${multiSend.address}`);
 
     setTimeout(() => {
         hre.run("verify:verify", {
-            address: multiSend.address
+            address: multiSend.address,
+            arguments: bank
         });
     }, 5000)
 

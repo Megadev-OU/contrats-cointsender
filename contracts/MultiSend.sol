@@ -8,13 +8,19 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract MultiSend is Ownable{
     using SafeMath for uint256;
     uint256 public percent;
+    address public bank;
     // Defining a constructor
-    constructor() {
+    constructor(address _bank) {
         percent = 10; // 0.1%
+        bank = _bank;
     }
 
     function changePercentage(uint256 _percent) public onlyOwner {
         percent = _percent;
+    }
+
+    function changeBankAddress(address _bank) public onlyOwner {
+        bank = _bank;
     }
 
     function multiSendDiffEth(
@@ -38,7 +44,7 @@ contract MultiSend is Ownable{
             taxes = taxes + FEE;
             recipients[i].transfer(_amount);
         }
-        payable(owner()).transfer(taxes);
+        payable(bank).transfer(taxes);
     }
 
     function multiSendDiffToken(
@@ -65,7 +71,7 @@ contract MultiSend is Ownable{
             taxes = taxes + FEE;
             ERC20(token).transferFrom(msg.sender, recipients[i], _amount);
         }
-         ERC20(token).transferFrom(msg.sender, owner(), taxes);
+         ERC20(token).transferFrom(msg.sender, bank, taxes);
     }
 
 }
