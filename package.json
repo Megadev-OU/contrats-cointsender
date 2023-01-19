@@ -6,7 +6,8 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "deploy": "npx hardhat run --network testnet scripts/deploy.js",
-    "test": "npx hardhat test"
+    "test": "npx hardhat test",
+    "test:coverage": "npx hardhat coverage --solcoverjs ./.solcover.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,7 @@
     "@nomiclabs/hardhat-ethers": "^2.0.6",
     "@nomiclabs/hardhat-etherscan": "^3.1.5",
     "@openzeppelin/contracts": "^4.8.1",
+    "@openzeppelin/contracts-upgradeable": "^4.7.0",
     "dotenv": "^16.0.1"
   }
 }

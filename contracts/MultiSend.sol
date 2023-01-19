@@ -2,16 +2,32 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-contract MultiSend is Ownable{
-    using SafeMath for uint256;
+contract MultiSend is OwnableUpgradeable,
+UUPSUpgradeable {
+    using SafeMathUpgradeable for uint256;
     uint256 public percent;
     address public bank;
+    bool private initialized;
+
     // Defining a constructor
-    constructor(address _bank) {
-        percent = 10; // 0.1%
+    constructor() {
+        _disableInitializers();
+        percent = 10;
+        // 0.1%
+        bank = 0xe9D3F501B082Ba426b4Fb1be6b00be64D486d4d9;
+    }
+
+    function _authorizeUpgrade(address newImplementation) internal virtual override onlyOwner {}
+
+    function initialize(uint256 _percent, address _bank) public initializer {
+        require(!initialized, "Contract instance has already been initialized");
+        __UUPSUpgradeable_init();
+        initialized = true;
+        percent = _percent;
         bank = _bank;
     }
 
@@ -71,7 +87,7 @@ contract MultiSend is Ownable{
             taxes = taxes + FEE;
             ERC20(token).transferFrom(msg.sender, recipients[i], _amount);
         }
-         ERC20(token).transferFrom(msg.sender, bank, taxes);
+        ERC20(token).transferFrom(msg.sender, bank, taxes);
     }
 
 }

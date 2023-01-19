@@ -1,17 +1,38 @@
 const hre = require("hardhat");
+const {ethers, upgrades} = require("hardhat");
 
 async function main() {
-    const MultiSend = await hre.ethers.getContractFactory("MultiSend");
-    const bank = 'ADDRESS'
-    const multiSend = await MultiSend.deploy(bank);
-    await multiSend.deployed();
 
-    console.log(`multiSend deployed to ${multiSend.address}`);
+    async function getFactories() {
+        let factories = {};
+
+        factories.MultiSend = await ethers.getContractFactory(
+            "MultiSend"
+        );
+        return factories;
+    }
+
+    const owner = await ethers.getSigners();
+
+    const contracts = {};
+    contracts.factories = await getFactories();
+
+    contracts.MultiSend = await upgrades.deployProxy(
+        contracts.factories.MultiSend,
+        {
+            initializer: "initialize",
+            kind: "uups",
+        }
+    );
+
+    await contracts.MultiSend.deployed();
+
+    console.log(`multiSend deployed to ${contracts.address}`);
 
     setTimeout(() => {
         hre.run("verify:verify", {
-            address: multiSend.address,
-            arguments: bank
+            address: contracts.address,
+            arguments: owner
         });
     }, 5000)
 
