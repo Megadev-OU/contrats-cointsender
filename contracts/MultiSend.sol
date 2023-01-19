@@ -6,29 +6,30 @@ import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-contract MultiSend is OwnableUpgradeable,
-UUPSUpgradeable {
+contract MultiSend is  UUPSUpgradeable, OwnableUpgradeable {
     using SafeMathUpgradeable for uint256;
+
     uint256 public percent;
     address public bank;
-    bool private initialized;
 
-    // Defining a constructor
+    /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
+    }
+
+    function _authorizeUpgrade(address newImplementation)
+        internal
+        virtual
+        override
+        onlyOwner
+    {}
+
+    function initialize() public initializer {
+        __UUPSUpgradeable_init();
+        __Ownable_init();
         percent = 10;
         // 0.1%
         bank = 0xe9D3F501B082Ba426b4Fb1be6b00be64D486d4d9;
-    }
-
-    function _authorizeUpgrade(address newImplementation) internal virtual override onlyOwner {}
-
-    function initialize(uint256 _percent, address _bank) public initializer {
-        require(!initialized, "Contract instance has already been initialized");
-        __UUPSUpgradeable_init();
-        initialized = true;
-        percent = _percent;
-        bank = _bank;
     }
 
     function changePercentage(uint256 _percent) public onlyOwner {
@@ -74,11 +75,16 @@ UUPSUpgradeable {
         uint256 currentSum = 0;
         uint256 taxes = 0;
         for (uint256 i = 0; i < recipients.length; i++) {
-            require(amounts[i] > 0, 'Value must be more than 0');
+            require(amounts[i] > 0, "Value must be more than 0");
             currentSum = currentSum + amounts[i];
-            require(currentSum <= ERC20(token).balanceOf(msg.sender), 'Influence balance');
-            require(currentSum <= ERC20(token).allowance(msg.sender, address(this)), 'Influence allowance');
-
+            require(
+                currentSum <= ERC20(token).balanceOf(msg.sender),
+                "Influence balance"
+            );
+            require(
+                currentSum <= ERC20(token).allowance(msg.sender, address(this)),
+                "Influence allowance"
+            );
         }
 
         for (uint256 i = 0; i < recipients.length; i++) {
@@ -89,5 +95,4 @@ UUPSUpgradeable {
         }
         ERC20(token).transferFrom(msg.sender, bank, taxes);
     }
-
 }
