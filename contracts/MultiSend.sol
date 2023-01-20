@@ -25,8 +25,9 @@ contract MultiSend is  UUPSUpgradeable, OwnableUpgradeable {
     {}
 
     function initialize() public initializer {
-        __UUPSUpgradeable_init();
         __Ownable_init();
+        __UUPSUpgradeable_init();
+        
         percent = 10;
         // 0.1%
         bank = 0xe9D3F501B082Ba426b4Fb1be6b00be64D486d4d9;
