@@ -22,15 +22,133 @@ module.exports = {
             gasPrice: 20000000000,
             accounts: [process.env.PRIVATE_KEY]
         },
-        mainnet: {
+        bsc: {
             url: "https://bsc-dataseed.binance.org/",
             chainId: 56,
             gasPrice: 20000000000,
             accounts: [process.env.PRIVATE_KEY]
         },
-        localhost: {
-            url: "http://127.0.0.1:8545"
+        avalanche: {
+            url: "https://api.avax.network/ext/bc/C/rpc",
+            chainId: 43114,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
         },
+        polygon: {
+            url: "https://polygon-rpc.com/",
+            chainId: 137,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        eth: {
+            url: "https://mainnet.infura.io/v3/",
+            chainId: 1,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        godwoken: {
+            url: "https://mainnet.godwoken.io/rpc/eth-wallet",
+            chainId: 71394,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        arbitrum: {
+            url: "https://arb1.arbitrum.io/rpc",
+            chainId: 42161,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        optimism: {
+            url: "https://optimism-mainnet.infura.io",
+            chainId: 10,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        aurora: {
+            url: "https://aurora-mainnet.infura.io",
+            chainId: 1313161554,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        fantom: {
+            url: "https://rpc.ankr.com/fantom/",
+            chainId: 250,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        arbitrumOne: {
+            url: "https://rpc.ankr.com/arbitrum",
+            chainId: 42161,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        celo: {
+            url: "https://forno.celo.org",
+            chainId: 42220,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        moonbeam: {
+            url: "https://rpc.api.moonbeam.network",
+            chainId: 1284,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        ronin: {
+            url: "https://api.roninchain.com/rpc",
+            chainId: 2020,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        gnosis: {
+            url: "https://rpc.gnosischain.com",
+            chainId: 100,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        fuse: {
+            url: "https://rpc.fuse.io",
+            chainId: 122,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        shardeum: {
+            url: "https://liberty10.shardeum.org",
+            chainId: 8080,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        quai: {
+            url: "https://quai.node.endpoint.io",
+            chainId: 994,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        arbitrumNova: {
+            url: "https://nova.arbitrum.io/rpc",
+            chainId: 42170,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        zkSync: {
+            url: "https://zksync2-testnet.zksync.dev",
+            chainId: 280,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        scroll: {
+            url: "https://prealpha-rpc.scroll.io/l1",
+            chainId: 534351,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+        scrollL2: {
+            url: "https://prealpha-rpc.scroll.io/l2",
+            chainId: 534354,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
+
         hardhat: {
             accounts: realAccounts,
             chainId: 1337,
