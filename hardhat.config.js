@@ -166,6 +166,16 @@ module.exports = {
         cache: "./cache",
         artifacts: "./artifacts"
     },
+    solidity: {
+    version: "0.8.0",
+    docker: false,
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 99999,
+      },
+    },
+  },
     mocha: {
         timeout: 20000
     },
