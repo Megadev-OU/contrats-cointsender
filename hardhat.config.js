@@ -148,6 +148,12 @@ module.exports = {
             gasPrice: 20000000000,
             accounts: [process.env.PRIVATE_KEY]
         },
+        oasis: {
+            url: "https://emerald.oasis.dev",
+            chainId: 42262,
+            gasPrice: 20000000000,
+            accounts: [process.env.PRIVATE_KEY]
+        },
 
         hardhat: {
             accounts: realAccounts,
