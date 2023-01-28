@@ -168,7 +168,7 @@ module.exports = {
         artifacts: "./artifacts"
     },
     solidity: {
-    version: "0.8.0",
+    version: "0.8.17",
     docker: false,
     settings: {
       optimizer: {
