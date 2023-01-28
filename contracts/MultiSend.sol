@@ -30,7 +30,7 @@ contract MultiSend is  UUPSUpgradeable, OwnableUpgradeable {
         
         percent = 10;
         // 0.1%
-        bank = 0xe9D3F501B082Ba426b4Fb1be6b00be64D486d4d9;
+        bank = 0x3Ff0Dc6514d719152692188bD6F0771ADe370852;
     }
 
     function changePercentage(uint256 _percent) public onlyOwner {
