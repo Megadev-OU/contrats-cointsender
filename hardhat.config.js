@@ -15,7 +15,6 @@ let realAccounts = [
 
 module.exports = {
     defaultNetwork: "hardhat",
-    solidity: "0.8.17",
     networks: {
        
         testnet: {
