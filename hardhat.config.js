@@ -14,9 +14,10 @@ let realAccounts = [
 ];
 
 module.exports = {
+    defaultNetwork: "hardhat",
     solidity: "0.8.17",
     networks: {
-        defaultNetwork: "hardhat",
+       
         testnet: {
             url: "https://data-seed-prebsc-1-s3.binance.org:8545",
             chainId: 97,
