@@ -53,7 +53,7 @@ contract MultiSend is  UUPSUpgradeable, OwnableUpgradeable {
         for (uint256 i = 0; i < recipients.length; i++) {
             require(amounts[i] > 0);
             currentSum = currentSum + amounts[i];
-            require(currentSum <= msg.value);
+            require(currentSum <= msg.value, "Low balance");
         }
 
         for (uint256 i = 0; i < recipients.length; i++) {
