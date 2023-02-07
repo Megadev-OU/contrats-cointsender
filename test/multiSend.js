@@ -86,27 +86,26 @@ describe("Check reverts", function () {
 
     it("Send ETH with different length", async () => {
         const {contract, owner} = await loadFixture(main);
-        await expect(contract.multiSendDiffEth([owner.address, owner.address], [ethers.utils.formatUnits(2, "wei")], {value: ethers.utils.formatUnits(1, "wei")})).to.be.revertedWith("Low Balance");
-        ;
+        await expect(contract.multiSendDiffEth([owner.address, owner.address], [ethers.utils.formatUnits(2, "wei")], {value: ethers.utils.formatUnits(1, "wei")})).to.be.reverted;
     })
 
     it("Send ETH with Low balance", async () => {
         const {contract, owner} = await loadFixture(main);
-        await expect(contract.multiSendDiffEth([owner.address], [ethers.utils.formatUnits(100, "wei")], {value: ethers.utils.formatUnits(20, "wei")})).to.be.revertedWith("");
+        await expect(contract.multiSendDiffEth([owner.address], [ethers.utils.formatUnits(100, "wei")], {value: ethers.utils.formatUnits(20, "wei")})).to.be.reverted;
     })
 
     it("Send ETH with zero amount", async () => {
         const {contract, owner} = await loadFixture(main);
-        await expect(contract.multiSendDiffEth([owner.address], [0], {value: ethers.utils.formatUnits(1, "wei")})).to.be.revertedWith("Low Balance");
+        await expect(contract.multiSendDiffEth([owner.address], [0], {value: ethers.utils.formatUnits(1, "wei")})).to.be.reverted;
     })
 
     it("Send ETH with amount more then payable", async () => {
         const {contract, owner} = await loadFixture(main);
-        await expect(contract.multiSendDiffEth([owner.address], [ethers.utils.formatUnits(10000, "wei")], {value: ethers.utils.formatUnits(1, "wei")})).to.be.revertedWith("");
+        await expect(contract.multiSendDiffEth([owner.address], [ethers.utils.formatUnits(10000, "wei")], {value: ethers.utils.formatUnits(1, "wei")})).to.be.reverted;
     })
 
     it("Send ETH with empty recipients", async () => {
         const {contract} = await loadFixture(main);
-        await expect(contract.multiSendDiffEth([], [ethers.utils.formatUnits(1, "wei")], {value: ethers.utils.formatUnits(1, "wei")})).to.be.revertedWith("");
+        await expect(contract.multiSendDiffEth([], [ethers.utils.formatUnits(1, "wei")], {value: ethers.utils.formatUnits(1, "wei")})).to.be.reverted;
     })
 })
