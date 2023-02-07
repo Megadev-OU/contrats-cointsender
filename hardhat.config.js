@@ -2,19 +2,25 @@ require("dotenv").config();
 require("@nomicfoundation/hardhat-toolbox");
 require('@openzeppelin/hardhat-upgrades');
 require("@nomiclabs/hardhat-etherscan");
+require('hardhat-deploy');
 
 const forkingAccountsBalance = `50000${"0".repeat(18)}`;
 
 
 let realAccounts = [
   {
-    privateKey: `0x${process.env.PRIVATE_KEY}`,
+    privateKey: `${process.env.PRIVATE_KEY}`,
     balance: forkingAccountsBalance,
   },
 ];
 
 module.exports = {
     defaultNetwork: "hardhat",
+    namedAccounts: {
+        deployer: {
+          default: 0
+        },
+      },
     networks: {
        
         testnet: {
@@ -181,6 +187,15 @@ module.exports = {
         timeout: 20000
     },
     etherscan: {
-        apiKey: process.env.ETHERSCAN_API_KEY
-    },
+        // Your API key for Etherscan
+        // Obtain one at https://etherscan.io/
+        apiKey: {
+          mainnet: process.env.ETHSCAN_API_KEY,
+            rinkeby: process.env.ETHSCAN_API_KEY,
+            testnet: process.env.BSCSCAN_API_KEY,
+            bsc:process.env.BSCSCAN_API_KEY,
+
+          // polygonMumbai: secrets.api_key_polygon,
+        },
+      },
 };

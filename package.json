@@ -6,8 +6,8 @@
   "scripts": {
     "compile": "npx hardhat compile",
     "deploy:local": "npx hardhat run --network hardhat scripts/deploy.js",
-    "deploy": "npx hardhat run --network testnet scripts/deploy.js",
     "deploy:current": "npx hardhat run scripts/deploy.js",
+    "deploy": "npx hardhat deploy",
     "test": "npx hardhat test",
     "test:coverage": "npx hardhat coverage --solcoverjs ./.solcover.js"
   },
@@ -17,7 +17,6 @@
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.5",
     "@nomicfoundation/hardhat-network-helpers": "^1.0.7",
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
-    "@nomiclabs/hardhat-ethers": "^2.2.2",
     "@openzeppelin/hardhat-upgrades": "^1.22.0",
     "@typechain/ethers-v5": "^10.2.0",
     "@typechain/hardhat": "^6.1.5",
@@ -26,6 +25,7 @@
     "chai": "^4.3.7",
     "ethers": "^5.7.2",
     "hardhat": "^2.12.6",
+    "hardhat-deploy": "^0.11.23",
     "hardhat-gas-reporter": "^1.0.9",
     "solidity-coverage": "^0.8.2",
     "ts-node": "^10.9.1",
@@ -33,10 +33,11 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@^0.3.0-beta.13",
     "@nomiclabs/hardhat-etherscan": "^3.1.5",
     "@openzeppelin/contracts": "^4.8.1",
     "@openzeppelin/contracts-upgradeable": "^4.7.0",
-    "dotenv": "^16.0.1"
+    "dotenv": "^16.0.1",
+    "child_process": "^1.0.2"
   }
 }
