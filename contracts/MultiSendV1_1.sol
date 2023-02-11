@@ -58,6 +58,7 @@ contract MultiSendV1_1 is  UUPSUpgradeable, OwnableUpgradeable {
             require(amounts[i] > 0);
             currentSum = currentSum + amounts[i];
             require(currentSum <= msg.value, "Low balance");
+            require(recipients[i] != address(0), "Recipient must be not zero address");
         }
 
         for (uint256 i = 0; i < recipients.length; i++) {
@@ -81,6 +82,7 @@ contract MultiSendV1_1 is  UUPSUpgradeable, OwnableUpgradeable {
         uint256 taxes = 0;
         for (uint256 i = 0; i < recipients.length; i++) {
             require(amounts[i] > 0, "Value must be more than 0");
+            require(recipients[i] != address(0), "Recipient must be not zero address");
             currentSum = currentSum + amounts[i];
             require(
                 currentSum <= IERC20Upgradeable(token).balanceOf(msg.sender),
