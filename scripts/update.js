@@ -1,13 +1,12 @@
-const hre = require("hardhat");
-const {ethers, upgrades} = require("hardhat");
+const {hre,ethers, upgrades} = require("hardhat");
 
 async function main() {
-    const {oldContract} = "";
-    const newContract = "";
-
+    const oldContract = "";
+    const newContractFactory = await ethers.getContractFactory("MultiSendV1_1");
+  
     multisend = await upgrades.upgradeProxy(
         oldContract,
-        newContract
+        newContractFactory
     );
     console.log(multisend);
 

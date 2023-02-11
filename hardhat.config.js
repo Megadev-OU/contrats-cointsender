@@ -48,7 +48,7 @@ module.exports = {
             accounts: [process.env.PRIVATE_KEY]
         },
         eth: {
-            url: "https://mainnet.infura.io/v3/",
+            url: "https://mainnet.infura.io/v3/1e9df73b43b24ec7ac8fe5c78754e45a",
             chainId: 1,
             gasPrice: 20000000000,
             accounts: [process.env.PRIVATE_KEY]

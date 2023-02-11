@@ -113,7 +113,7 @@ describe("Check reverts", function () {
 
 
     it("upgrade contract check", async () => {
-        const {contract} = await loadFixture(main);
+        const contract = await loadFixture(main);
         const contract2 = await ethers.getContractFactory("MultiSendV1_1");
   
         multisend = await upgrades.upgradeProxy(
