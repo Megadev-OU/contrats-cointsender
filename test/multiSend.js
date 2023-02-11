@@ -116,7 +116,7 @@ describe("Check reverts", function () {
         const {contract} = await loadFixture(main);
         const contract2 = await ethers.getContractFactory("MultiSendV1_1");
   
-        eventERC1155 = await upgrades.upgradeProxy(
+        multisend = await upgrades.upgradeProxy(
             contract.address,
             contract2
         );
