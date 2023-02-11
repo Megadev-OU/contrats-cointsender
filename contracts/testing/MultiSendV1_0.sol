@@ -6,7 +6,7 @@ import "@openzeppelin/contracts-upgradeable/utils/math/SafeMathUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-contract MultiSend is  UUPSUpgradeable, OwnableUpgradeable {
+contract MultiSendV1_0 is  UUPSUpgradeable, OwnableUpgradeable {
     using SafeMathUpgradeable for uint256;
 
     uint256 public percent;

@@ -11,7 +11,7 @@ async function main() {
         let factories = {};
 
         factories.MultiSend = await ethers.getContractFactory(
-            "MultiSend",
+            "MultiSendV1_1",
             owner
         );
         return factories;
@@ -84,6 +84,8 @@ describe("Send Money", function () {
 
 describe("Check reverts", function () {
 
+    
+
     it("Send ETH with different length", async () => {
         const {contract, owner} = await loadFixture(main);
         await expect(contract.multiSendDiffEth([owner.address, owner.address], [ethers.utils.formatUnits(2, "wei")], {value: ethers.utils.formatUnits(1, "wei")})).to.be.reverted;
@@ -108,4 +110,15 @@ describe("Check reverts", function () {
         const {contract} = await loadFixture(main);
         await expect(contract.multiSendDiffEth([], [ethers.utils.formatUnits(1, "wei")], {value: ethers.utils.formatUnits(1, "wei")})).to.be.reverted;
     })
+
+
+    it("upgrade contract check", async () => {
+        const {contract} = await loadFixture(main);
+        const contract2 = await ethers.getContractFactory("MultiSendV1_1");
+  
+        eventERC1155 = await upgrades.upgradeProxy(
+            contract.address,
+            contract2
+        );
+    });
 })

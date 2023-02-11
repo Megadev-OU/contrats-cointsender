@@ -7,7 +7,7 @@ async function main() {
         let factories = {};
 
         factories.MultiSend = await ethers.getContractFactory(
-            "MultiSend",
+            "MultiSendV1_1",
             owner
         );
         return factories;
