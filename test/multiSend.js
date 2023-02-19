@@ -10,8 +10,19 @@ async function main() {
     async function getFactories(owner) {
         let factories = {};
 
-        factories.MultiSend = await ethers.getContractFactory(
+        factories.MultiSendV1_0 = await ethers.getContractFactory(
+            "MultiSendV1_0",
+            owner
+        );
+        
+
+        factories.MultiSendV1_1 = await ethers.getContractFactory(
             "MultiSendV1_1",
+            owner
+        );
+
+        factories.MultiSend = await ethers.getContractFactory(
+            "MultiSend",
             owner
         );
         return factories;
@@ -22,7 +33,27 @@ async function main() {
     const contracts = {};
     contracts.factories = await getFactories(owner);
 
-    const MultiSend = contracts.MultiSend = await upgrades.deployProxy(
+    const MultiSendV1_0 = contracts.MultiSendV1_0 = await upgrades.deployProxy(
+        contracts.factories.MultiSendV1_0,
+        {
+            initializer: "initialize",
+            kind: "uups",
+        }
+    );
+
+    await contracts.MultiSendV1_0.deployed();
+
+    const MultiSendV1_1 = contracts.MultiSendV1_1 = await upgrades.deployProxy(
+        contracts.factories.MultiSendV1_1,
+        {
+            initializer: "initialize",
+            kind: "uups",
+        }
+    );
+
+    await contracts.MultiSendV1_1.deployed();
+
+    const MultiSend = contracts.MultiSendV1_2 = await upgrades.deployProxy(
         contracts.factories.MultiSend,
         {
             initializer: "initialize",
@@ -30,7 +61,8 @@ async function main() {
         }
     );
 
-    const contract = await contracts.MultiSend.deployed();
+    const contract = await contracts.MultiSendV1_2.deployed();
+
 
     return {contract, MultiSend, owner, addr1, addr2};
 }
@@ -112,13 +144,25 @@ describe("Check reverts", function () {
     })
 
 
-    it("upgrade contract check", async () => {
-        const contract = await loadFixture(main);
-        const contract2 = await ethers.getContractFactory("MultiSendV1_1");
+    it("upgrade contract v1.0 to v1.1 check", async () => {
+        const contracts = await loadFixture(main);
+        const contractV1_1 = await ethers.getContractFactory("MultiSendV1_1");
+        const contractV1_2 = await ethers.getContractFactory("MultiSend");
   
         multisend = await upgrades.upgradeProxy(
-            contract.address,
-            contract2
+            contracts.MultiSend.address,
+            contractV1_1
         );
+
+        await multisend.deployed();
+
+        multisend = await upgrades.upgradeProxy(
+            multisend.address,
+            contractV1_2
+        );
+
+        await multisend.deployed();
     });
+
+
 })

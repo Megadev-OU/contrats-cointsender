@@ -2,8 +2,8 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   
     const {deployer} = await getNamedAccounts();
     const { deploy } = deployments;
-    await deploy('MultiSendV1_1', {
-        contract: "MultiSendV1_1",
+    await deploy('MultiSend', {
+        contract: "MultiSend",
         from: deployer,
         args: [],
         log: true,

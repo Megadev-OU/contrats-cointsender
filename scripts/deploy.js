@@ -7,7 +7,7 @@ async function main() {
         let factories = {};
 
         factories.MultiSend = await ethers.getContractFactory(
-            "MultiSendV1_1",
+            "MultiSend",
             owner
         );
         return factories;
@@ -30,12 +30,12 @@ async function main() {
 
     console.log(`multiSend deployed to ${contracts.MultiSend.address}`);
 
-    setTimeout(() => {
-        hre.run("verify:verify", {
-            address: contracts.MultiSend.address,
-            arguments: owner
-        });
-    }, 5000)
+    // setTimeout(() => {
+    //     hre.run("verify:verify", {
+    //         address: contracts.MultiSend.address,
+    //         arguments: owner
+    //     });
+    // }, 5000)
 
 }
 
