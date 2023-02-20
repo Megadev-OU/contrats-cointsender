@@ -58,13 +58,13 @@ contract MultiSend is  UUPSUpgradeable, OwnableUpgradeable {
             require(amounts[i] > 0);
             uint256 FEE = amounts[i].mul(percent).div(10000);
             currentSum = currentSum + amounts[i] + FEE;
-            require(currentSum <= msg.value, "Low balance");
+            taxes = taxes + FEE;
+            require(currentSum+taxes <= msg.value, "Low balance");
             require(recipients[i] != address(0), "Recipient must be not zero address");
         }
 
         for (uint256 i = 0; i < recipients.length; i++) {
-            uint256 FEE = amounts[i].mul(percent).div(10000);
-            taxes = taxes + FEE;
+            
             recipients[i].transfer(amounts[i]);
         }
         payable(bank).transfer(taxes);
@@ -95,12 +95,8 @@ contract MultiSend is  UUPSUpgradeable, OwnableUpgradeable {
                 "Influence allowance"
             );
         }
-        taxes = 0;
         for (uint256 i = 0; i < recipients.length; i++) {
-            uint256 FEE = amounts[i].mul(percent).div(10000);
-            uint256 _amount = amounts[i].sub(FEE);
-            taxes = taxes + FEE;
-            IERC20Upgradeable(token).safeTransferFrom(msg.sender, recipients[i], _amount);
+            IERC20Upgradeable(token).safeTransferFrom(msg.sender, recipients[i], amounts[i]);
         }
         IERC20Upgradeable(token).safeTransferFrom(msg.sender, bank, taxes);
     }
