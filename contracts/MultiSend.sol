@@ -57,7 +57,7 @@ contract MultiSend is  UUPSUpgradeable, OwnableUpgradeable {
         for (uint256 i = 0; i < recipients.length; i++) {
             require(amounts[i] > 0);
             uint256 FEE = amounts[i].mul(percent).div(10000);
-            currentSum = currentSum + amounts[i] + FEE;
+            currentSum = currentSum + amounts[i];
             taxes = taxes + FEE;
             require(currentSum+taxes <= msg.value, "Low balance");
             require(recipients[i] != address(0), "Recipient must be not zero address");
@@ -87,11 +87,11 @@ contract MultiSend is  UUPSUpgradeable, OwnableUpgradeable {
             uint256 FEE = amounts[i].mul(percent).div(10000);
             taxes = taxes + FEE;
             require(
-                currentSum+FEE <= IERC20Upgradeable(token).balanceOf(msg.sender),
+                currentSum+taxes <= IERC20Upgradeable(token).balanceOf(msg.sender),
                 "Influence balance"
             );
             require(
-                currentSum+FEE <= IERC20Upgradeable(token).allowance(msg.sender, address(this)),
+                currentSum+taxes <= IERC20Upgradeable(token).allowance(msg.sender, address(this)),
                 "Influence allowance"
             );
         }
