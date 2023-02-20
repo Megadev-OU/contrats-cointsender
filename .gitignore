@@ -10,4 +10,6 @@ package-lock.json
 cache
 artifacts
 deployments
-
+near_contract/multisend/Cargo.lock
+.idea
+near_contract/multisend/target
