@@ -15,7 +15,7 @@ let realAccounts = [
 ];
 
 module.exports = {
-    defaultNetwork: "bscTestnet",
+    defaultNetwork: "godwoken",
     namedAccounts: {
         deployer: {
             default: 0
@@ -191,9 +191,20 @@ module.exports = {
             gnosis: 'Z9UMP3D2MR89X6AU3KJZF95PZY1B36FZTS',
             rinkeby: process.env.ETHSCAN_API_KEY,
             bsc: process.env.BSCSCAN_API_KEY,
-            bscTestnet:process.env.BSCSCAN_API_KEY
-
+            bscTestnet:process.env.BSCSCAN_API_KEY,
+            godwoken: 'ckey_75cec473a7904df8b3ca8e0676f'
+            
             // polygonMumbai: secrets.api_key_polygon,
         },
+        customChains: [
+            {
+              network: "godwoken",
+              chainId: 71402,
+              urls: {
+                apiURL: "https://gw-mainnet-explorer.nervosdao.community/api",
+                browserURL: "https://gw-mainnet-explorer.nervosdao.community"
+              }
+            }
+          ]
     },
 };
