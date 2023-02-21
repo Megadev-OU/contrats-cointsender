@@ -1,4 +1,4 @@
-use near_sdk::{env, require, AccountId, Balance};
+use near_sdk::{env, require, AccountId};
 
 use crate::*;
 
@@ -29,8 +29,8 @@ impl Multisender {
         self.bank = bank;
     }
 
-    pub fn get_percentage(&self) -> Balance {
-        self.percentage
+    pub fn get_percentage(&self) -> WBalance {
+        U128(self.percentage)
     }
 
     pub fn change_percentage(&mut self, percent: U128) {
@@ -101,11 +101,11 @@ mod tests {
 
         testing_env!(get_context(false, alice(), alice()));
 
-        assert_eq!(multisend_contract.get_percentage(), 10); // represents 0.1%
+        assert_eq!(multisend_contract.get_percentage(), U128(10)); // represents 0.1%
 
         multisend_contract.change_percentage(U128::from(50)); // represents 0.5%
 
-        assert_eq!(multisend_contract.get_percentage(), 50); // represents 0.5%
+        assert_eq!(multisend_contract.get_percentage(), U128(50)); // represents 0.5%
     }
 
     #[test]
@@ -115,7 +115,7 @@ mod tests {
         let mut multisend_contract = Multisender::initialize(alice(), alice());
 
         testing_env!(get_context(false, alice(), bob()));
-        assert_eq!(multisend_contract.get_percentage(), 10); // represents 0.1%
+        assert_eq!(multisend_contract.get_percentage(), U128(10)); // represents 0.1%
 
         multisend_contract.change_percentage(U128::from(50)); // represents 0.5%
     }
