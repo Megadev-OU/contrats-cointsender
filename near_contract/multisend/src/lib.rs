@@ -1,16 +1,12 @@
 pub mod admin;
 
 
-use near_sdk::{env, near_bindgen, AccountId, require, Balance, Promise, Gas};
+use near_sdk::{env, near_bindgen, AccountId, require, Balance, Promise};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::json_types::U128;
 use near_sdk::env::attached_deposit;
 
 pub type WBalance = U128;
-
-
-pub const CALLBACK: Gas = Gas(25_000_000_000_000);
-
 
 pub fn ntoy(near_amount: Balance) -> Balance {
     // near to yocto convert
@@ -57,7 +53,7 @@ impl Multisender {
     }
 
     #[payable]
-    pub fn multi_send_from_balance_diff_near(&mut self, recipients: Vec<(AccountId, WBalance)>) {
+    pub fn multi_send_from_attached_deposit_near(&mut self, recipients: Vec<(AccountId, WBalance)>) {
         require!(recipients.len() > 0);
 
         let mut final_amount = 0 as Balance;
