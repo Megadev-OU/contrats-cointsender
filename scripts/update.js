@@ -1,5 +1,5 @@
-const {hre,ethers, upgrades} = require("hardhat");
-const {loadFixture} = require("@nomicfoundation/hardhat-network-helpers");
+const { hre, ethers, upgrades } = require("hardhat");
+const { loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
 
 
 async function main2() {
@@ -8,7 +8,7 @@ async function main2() {
         let factories = {};
 
         factories.MultiSend = await ethers.getContractFactory(
-            "MultiSendV1_1",
+            "MultiSend",
             owner
         );
         return factories;
@@ -29,17 +29,23 @@ async function main2() {
 
     const contract = await contracts.MultiSend.deployed();
 
-    return {contract, MultiSend, owner, addr1, addr2};
+    return { contract, MultiSend, owner, addr1, addr2 };
 }
 
 async function main() {
-    const oldContract = "";
-    const {contract} = await loadFixture(main2);
-    const newContractFactory = await ethers.getContractFactory("MultiSendV1_1");
-  
+    const oldContract = "0x1bb79e75a062ff90F8E79FE281f41324C3052afc";
+    const newContractAddress = "0x9B793EbE7353D2afcfa8f8310247aB4AF437cf96";
+    // const newContractFactoryV1_1 = await ethers.getContractFactory("MultiSendV1_1").forceImport(oldContract);
+    const newContractFactory = await ethers.getContractFactory("MultiSend");
+    const newContract = await upgrades.forceImport(newContractAddress, 
+        // newContractFactory, 
+        {
+        kind: "uups",
+    });
+    // val old = newContractFactoryV1_1.attach(oldContract)
     multisend = await upgrades.upgradeProxy(
-        contract.address,
-        newContractFactory
+        oldContract,
+        newContract
     );
     console.log(multisend);
 
