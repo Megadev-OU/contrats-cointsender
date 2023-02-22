@@ -38,7 +38,7 @@ async function main() {
     // const newContractFactoryV1_1 = await ethers.getContractFactory("MultiSendV1_1").forceImport(oldContract);
     const newContractFactory = await ethers.getContractFactory("MultiSend");
     const newContract = await upgrades.forceImport(newContractAddress, 
-        // newContractFactory, 
+        newContractFactory, 
         {
         kind: "uups",
     });
