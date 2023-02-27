@@ -47,3 +47,7 @@ near state otheraccount.testnet |  sed -n "s/.*formattedAmount: '\([^\\]*\).*'/\
 printf "account that are sending AFTER: "
 
 near state $1 |  sed -n "s/.*formattedAmount: '\([^\\]*\).*'/\1/p"
+
+
+
+#near call <token-contract-id> ft_transfer_call '{"receiver_id": "<contract-id>", "amount": <amount>, "msg": "{\"token_id\": \"<token-id>\", \"transfers\": [{\"recipient\": \"<recipient-1-id>\", \"amount\": <recipient-1-amount>}, {\"recipient\": \"<recipient-2-id>\", \"amount\": <recipient-2-amount>}] }" }' --accountId <account-id> --amount 0 --gas 100000000000000

@@ -1,6 +1,6 @@
 pub mod admin;
 mod upgrade;
-mod ft;
+mod ft_multisend;
 
 use near_sdk::{env, near_bindgen, AccountId, require, Balance, Promise};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
