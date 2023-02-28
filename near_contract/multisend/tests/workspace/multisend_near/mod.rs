@@ -1,1 +1,0 @@
-mod multisend_near;

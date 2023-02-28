@@ -1,5 +1,6 @@
 pub mod admin;
-
+mod upgrade;
+mod ft_multisend;
 
 use near_sdk::{env, near_bindgen, AccountId, require, Balance, Promise};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
@@ -53,13 +54,13 @@ impl Multisender {
     }
 
     #[payable]
-    pub fn multi_send_from_attached_deposit_near(&mut self, recipients: Vec<(AccountId, WBalance)>) {
+    pub fn multi_send_from_attached_deposit_near(&mut self, recipients: Vec<AccountId>, amounts: Vec<WBalance>) {
         require!(recipients.len() > 0);
 
         let mut final_amount = 0 as Balance;
         let mut taxes = 0 as Balance;
 
-        for (recipient, amount) in recipients.iter() {
+        for (recipient, amount) in recipients.iter().zip(amounts.iter()) {
             // non zero amounts and correct recipient address
             require!(*amount > U128(0));
             assert!(
@@ -84,7 +85,7 @@ impl Multisender {
 
         let mut logs: String = "".to_string();
 
-        for (recipient, amount) in recipients.iter() {
+        for (recipient, amount) in recipients.iter().zip(amounts.iter()){
             let log = format!("Sending {} yNEAR (~{} NEAR) to account @{}\n", amount.0, yton(amount.0), recipient);
             logs.push_str(&log);
 
