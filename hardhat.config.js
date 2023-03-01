@@ -192,7 +192,8 @@ module.exports = {
             rinkeby: process.env.ETHSCAN_API_KEY,
             bsc: process.env.BSCSCAN_API_KEY,
             bscTestnet:process.env.BSCSCAN_API_KEY,
-            godwoken: process.env.GODWOKEN_API_KEY
+            godwoken: process.env.GODWOKEN_API_KEY,
+            oasis: process.env.OASIS_API_KEY
             
             // polygonMumbai: secrets.api_key_polygon,
         },
@@ -204,7 +205,15 @@ module.exports = {
                 apiURL: "https://gw-mainnet-explorer.nervosdao.community/api",
                 browserURL: "https://gw-mainnet-explorer.nervosdao.community"
               }
-            }
+            },
+            {
+                network: "oasis",
+                chainId: 42262,
+                urls: {
+                  apiURL: "https://https://explorer.emerald.oasis.dev/api",
+                  browserURL: "https://https://explorer.emerald.oasis.dev/"
+                }
+              }
           ]
     },
 };
