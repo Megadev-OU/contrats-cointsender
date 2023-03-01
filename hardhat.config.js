@@ -148,13 +148,18 @@ module.exports = {
 
             accounts: [process.env.PRIVATE_KEY]
         },
-        oasis: {
+        oasisEmerald: {
             url: "https://emerald.oasis.dev",
             chainId: 42262,
 
             accounts: [process.env.PRIVATE_KEY]
         },
+        oasisSapphire: {
+            url: "https://sapphire.oasis.io",
+            chainId: 23294,
 
+            accounts: [process.env.PRIVATE_KEY]
+        },
         hardhat: {
             accounts: realAccounts,
             chainId: 1337,
@@ -191,29 +196,38 @@ module.exports = {
             gnosis: process.env.GNOSIS_API_KEY,
             rinkeby: process.env.ETHSCAN_API_KEY,
             bsc: process.env.BSCSCAN_API_KEY,
-            bscTestnet:process.env.BSCSCAN_API_KEY,
+            bscTestnet: process.env.BSCSCAN_API_KEY,
             godwoken: process.env.GODWOKEN_API_KEY,
-            oasis: process.env.OASIS_API_KEY
-            
+            oasisEmerald: process.env.OASIS_API_KEY,
+            oasisSapphire: process.env.OASIS_API_KEY
+
             // polygonMumbai: secrets.api_key_polygon,
         },
         customChains: [
             {
-              network: "godwoken",
-              chainId: 71402,
-              urls: {
-                apiURL: "https://gw-mainnet-explorer.nervosdao.community/api",
-                browserURL: "https://gw-mainnet-explorer.nervosdao.community"
-              }
+                network: "godwoken",
+                chainId: 71402,
+                urls: {
+                    apiURL: "https://gw-mainnet-explorer.nervosdao.community/api",
+                    browserURL: "https://gw-mainnet-explorer.nervosdao.community"
+                }
             },
             {
-                network: "oasis",
+                network: "oasisEmerald",
                 chainId: 42262,
                 urls: {
-                  apiURL: "https://https://explorer.emerald.oasis.dev/api",
-                  browserURL: "https://https://explorer.emerald.oasis.dev/"
+                    apiURL: "https://https://explorer.emerald.oasis.dev/api",
+                    browserURL: "https://https://explorer.emerald.oasis.dev/"
                 }
-              }
-          ]
+            },
+            {
+                network: "oasisSapphire",
+                chainId: 23294,
+                urls: {
+                    apiURL: "https://explorer.sapphire.oasis.io/api",
+                    browserURL: "https://explorer.sapphire.oasis.io/"
+                }
+            }
+        ]
     },
 };
