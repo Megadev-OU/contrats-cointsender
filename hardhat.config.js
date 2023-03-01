@@ -184,15 +184,15 @@ module.exports = {
         // Obtain one at https://etherscan.io/
         apiKey: {
             mainnet: process.env.ETHSCAN_API_KEY,
-            avalanche: '1A2GJGCGCZBD327PC92469WASB5XI3HK6P',
-            polygon: 'SWUMSDGQA79TV2Y17NUC5FICBIEVVQYBZG',
-            moonbeam: '1RJHBGA1IANXZ215SE4FYVXGZTSJDITGEU',
-            arbitrumOne: '89YFSVMAERZ99UD6PVWIM8UUYF57SIHIB4',
-            gnosis: 'Z9UMP3D2MR89X6AU3KJZF95PZY1B36FZTS',
+            avalanche: process.env.AVALANCHE_API_KEY,
+            polygon: process.env.POLYGON_API_KEY,
+            moonbeam: process.env.MOONBEEN_API_KEY,
+            arbitrumOne: process.env.ARBITRUM_ONE_API_KEY,
+            gnosis: process.env.GNOSIS_API_KEY,
             rinkeby: process.env.ETHSCAN_API_KEY,
             bsc: process.env.BSCSCAN_API_KEY,
             bscTestnet:process.env.BSCSCAN_API_KEY,
-            godwoken: 'ckey_75cec473a7904df8b3ca8e0676f'
+            godwoken: process.env.GODWOKEN_API_KEY
             
             // polygonMumbai: secrets.api_key_polygon,
         },
