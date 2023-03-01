@@ -216,8 +216,8 @@ module.exports = {
                 network: "oasisEmerald",
                 chainId: 42262,
                 urls: {
-                    apiURL: "https://https://explorer.emerald.oasis.dev/api",
-                    browserURL: "https://https://explorer.emerald.oasis.dev/"
+                    apiURL: "https://explorer.emerald.oasis.dev/api",
+                    browserURL: "https://explorer.emerald.oasis.dev"
                 }
             },
             {
@@ -225,7 +225,7 @@ module.exports = {
                 chainId: 23294,
                 urls: {
                     apiURL: "https://explorer.sapphire.oasis.io/api",
-                    browserURL: "https://explorer.sapphire.oasis.io/"
+                    browserURL: "https://explorer.sapphire.oasis.io"
                 }
             }
         ]
