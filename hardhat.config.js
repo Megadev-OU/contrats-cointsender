@@ -3,6 +3,8 @@ require("@nomicfoundation/hardhat-toolbox");
 require('@openzeppelin/hardhat-upgrades');
 require("@nomiclabs/hardhat-etherscan");
 require('hardhat-deploy');
+require('@oasisprotocol/sapphire-hardhat');
+
 
 const forkingAccountsBalance = `50000${"0".repeat(18)}`;
 
@@ -15,7 +17,7 @@ let realAccounts = [
 ];
 
 module.exports = {
-    defaultNetwork: "godwoken",
+    defaultNetwork: "sapphire",
     namedAccounts: {
         deployer: {
             default: 0
@@ -154,7 +156,7 @@ module.exports = {
 
             accounts: [process.env.PRIVATE_KEY]
         },
-        oasisSapphire: {
+        sapphire: {
             url: "https://sapphire.oasis.io",
             chainId: 23294,
 
@@ -199,7 +201,7 @@ module.exports = {
             bscTestnet: process.env.BSCSCAN_API_KEY,
             godwoken: process.env.GODWOKEN_API_KEY,
             oasisEmerald: process.env.OASIS_API_KEY,
-            oasisSapphire: process.env.OASIS_API_KEY
+            sapphire: process.env.OASIS_API_KEY
 
             // polygonMumbai: secrets.api_key_polygon,
         },
@@ -221,7 +223,7 @@ module.exports = {
                 }
             },
             {
-                network: "oasisSapphire",
+                network: "sapphire",
                 chainId: 23294,
                 urls: {
                     apiURL: "https://explorer.sapphire.oasis.io/api",
