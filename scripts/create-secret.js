@@ -4,6 +4,7 @@ const {ethers, upgrades} = require("hardhat");
 
 
 async function main() {
+    const [owner] = await ethers.getSigners();
     const contractAddress = "0x1bb79e75a062ff90F8E79FE281f41324C3052afc";
     const multiSendFactory = await ethers.getContractFactory(
         "MultiSend",
