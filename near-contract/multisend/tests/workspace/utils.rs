@@ -1,3 +1,4 @@
+use near_sdk::json_types::U128;
 use near_sdk::serde_json::json;
 use near_sdk::{serde_json, AccountId};
 use workspaces::network::Sandbox;
@@ -37,12 +38,13 @@ pub async fn deploy_underlying(
 
     let _ = underlying
         .call("new_default_meta")
-        .args_json(json!({ "owner_id": owner.id(),
-        "name": "Wrapped Ethereum",
-        "symbol": "WETH",
-        "total_supply": "1000000000000000000000000000",
-        "decimals": decimals
-                }))
+        .args_json(json!({
+            "owner_id": owner.id(),
+            "name": "Wrapped Ethereum",
+            "symbol": "WETH",
+            "total_supply": "1000000000000000000000000000",
+            "decimals": decimals,
+        }))
         .max_gas()
         .transact()
         .await?;

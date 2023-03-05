@@ -52,10 +52,10 @@ impl Multisender {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
     use near_sdk::test_utils::test_env::{alice, bob};
     use near_sdk::test_utils::VMContextBuilder;
     use near_sdk::{testing_env, VMContext};
-    use super::*;
 
     pub fn get_context(is_view: bool, current: AccountId, signer: AccountId) -> VMContext {
         VMContextBuilder::new()
@@ -64,7 +64,6 @@ mod tests {
             .is_view(is_view)
             .build()
     }
-
 
     #[test]
     fn test_change_bank_address_success() {
@@ -81,7 +80,9 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "This functionality is allowed to be called by admin or contract only")]
+    #[should_panic(
+        expected = "This functionality is allowed to be called by admin or contract only"
+    )]
     fn test_change_bank_address_fail() {
         // setting up wrong admin that are NOT allowed to change bank account
         let mut multisend_contract = Multisender::initialize(alice(), alice());
@@ -92,7 +93,6 @@ mod tests {
 
         multisend_contract.change_bank_address(bob());
     }
-
 
     #[test]
     fn test_change_percentage_success() {
@@ -109,7 +109,9 @@ mod tests {
     }
 
     #[test]
-    #[should_panic(expected = "This functionality is allowed to be called by admin or contract only")]
+    #[should_panic(
+        expected = "This functionality is allowed to be called by admin or contract only"
+    )]
     fn test_change_percentage_fail() {
         // setting up wrong admin that are NOT allowed to change percentage
         let mut multisend_contract = Multisender::initialize(alice(), alice());
@@ -120,4 +122,3 @@ mod tests {
         multisend_contract.change_percentage(U128::from(50)); // represents 0.5%
     }
 }
-

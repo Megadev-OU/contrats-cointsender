@@ -15,7 +15,6 @@ async fn multisend_diff_token_fixture(
     let underlying_token = deploy_underlying(owner, worker, DECIMALS).await?;
     let multisend_near_contract = deploy_multisend_near(bank, owner, worker).await?;
 
-
     let bank_address: String = worker
         .view(multisend_near_contract.id(), "get_bank_address")
         .await?
@@ -34,8 +33,6 @@ async fn multisend_diff_token_fixture(
 
 #[tokio::test]
 async fn test_successful_multisend_diff_token() -> anyhow::Result<()> {
-
-
     ////////////////////////////////////////////////////////////////////////////
     // Stage 1: Deploy contracts such as underlying token and multi send contract
     ////////////////////////////////////////////////////////////////////////////
@@ -62,7 +59,8 @@ async fn test_successful_multisend_diff_token() -> anyhow::Result<()> {
         .await?
         .into_result()?;
 
-    let (multisend_near_account, underlying) = multisend_diff_token_fixture(&bank, &owner, &worker).await?;
+    let (multisend_near_account, underlying) =
+        multisend_diff_token_fixture(&bank, &owner, &worker).await?;
 
     ////////////////////////////////////////////////////////////////////////////////////////////
     // Stage 2: Deposit the storage for contract, each participant in multi transaction and
@@ -79,6 +77,15 @@ async fn test_successful_multisend_diff_token() -> anyhow::Result<()> {
         .transact()
         .await?;
 
+    let _ = underlying
+        .call("storage_deposit")
+        .args_json(json!({
+            "account_id": underlying.id()
+        }))
+        .max_gas()
+        .deposit(25 * 10u128.pow(23))
+        .transact()
+        .await?;
 
     let _ = underlying
         .call("storage_deposit")
@@ -114,50 +121,140 @@ async fn test_successful_multisend_diff_token() -> anyhow::Result<()> {
         .call("mint")
         .args_json(json!({
             "account_id": owner.id(),
+            "amount": U128::from(20000000000000000000000000000000)
+        }))
+        .max_gas()
+        .transact()
+        .await?;
+    let _ = underlying
+        .call("mint")
+        .args_json(json!({
+            "account_id": bank.id(),
+            "amount": U128::from(2000000000000000000000000000)
+        }))
+        .max_gas()
+        .transact()
+        .await?;
+    let _ = underlying
+        .call("mint")
+        .args_json(json!({
+            "account_id": alice.id(),
+            "amount": U128::from(2000000000000000000000000000)
+        }))
+        .max_gas()
+        .transact()
+        .await?;
+    let _ = underlying
+        .call("mint")
+        .args_json(json!({
+            "account_id": bob.id(),
             "amount": U128::from(2000000000000000000000000000)
         }))
         .max_gas()
         .transact()
         .await?;
 
+    let _ = underlying
+        .call("mint")
+        .args_json(json!({
+            "account_id": underlying.id(),
+            "amount": U128::from(20000000000000000000000000000000)
+        }))
+        .max_gas()
+        .transact()
+        .await?;
+
     let bank_ft_balance_of_before: U128 = worker
-        .view(
-            underlying.id(),
-            "ft_balance_of",
-        )
+        .view(underlying.id(), "ft_balance_of")
+        .args_json(json!({
+            "account_id": bank.id(),
+        }))
         .await?
         .json()?;
 
+    let alice_ft_balance_of_before: U128 = worker
+        .view(underlying.id(), "ft_balance_of")
+        .args_json(json!({
+            "account_id": alice.id(),
+        }))
+        .await?
+        .json()?;
 
-    // let multisend_transaction = owner
-    //     .call(
-    //         multisend_near_account.id(),
-    //         "multi_send_from_attached_deposit_near",
-    //     )
-    //     .args_json(json!({
-    //         "recipients": [alice.id(), bob.id()],
-    //         "amounts": [amount_to_transfer_to_alice, amount_to_transfer_to_bob],
-    //     }))
-    //     .max_gas()
-    //     .deposit(1010000000000000000000000000)
-    //     .transact()
-    //     .await?;
-    //
-    // assert!(multisend_transaction.is_success());
+    let bob_ft_balance_of_before: U128 = worker
+        .view(underlying.id(), "ft_balance_of")
+        .args_json(json!({
+            "account_id": bob.id(),
+        }))
+        .await?
+        .json()?;
 
+    let amount_to_transfer_to_alice: WBalance = U128::from(10000000000000000000000000); // 10 tokens
+    let amount_to_transfer_to_bob: WBalance = U128::from(10000000000000000000000000); // 10 tokens
+    let taxes: WBalance =
+        U128::from((amount_to_transfer_to_alice.0 + amount_to_transfer_to_bob.0) * 10 / 1000);
 
-    // assert_eq!(
-    //     bank_balance_before_transfer.balance + taxes.0,
-    //     bank_balance_after_transfer.balance
-    // );
-    // assert_eq!(
-    //     alice_balance_before_transfer.balance + amount_to_transfer_to_alice.0,
-    //     alice_balance_after_transfer.balance
-    // );
-    // assert_eq!(
-    //     bob_balance_before_transfer.balance + amount_to_transfer_to_bob.0,
-    //     bob_balance_after_transfer.balance
-    // );
+    let msg = json!(
+    {
+      "token_id": underlying.id(),
+      "transfers": [
+        {"recipient": alice.id(),
+         "amount": amount_to_transfer_to_alice.0.to_string()},
+        {"recipient": bob.id(),
+         "amount": amount_to_transfer_to_bob.0.to_string()}
+    ]
+    })
+    .to_string();
+
+    let multisend_transaction = owner
+        .call(underlying.id(), "ft_transfer_call")
+        .args_json(json!({
+            "receiver_id": multisend_near_account.id(),
+            "amount": U128::from(20200000000000000000000000),
+            "msg": msg,
+        }))
+        .max_gas()
+        .deposit(1)
+        .transact()
+        .await?;
+
+    assert!(multisend_transaction.is_success());
+
+    let bank_ft_balance_of_after: U128 = worker
+        .view(underlying.id(), "ft_balance_of")
+        .args_json(json!({
+            "account_id": bank.id(),
+        }))
+        .await?
+        .json()?;
+
+    let alice_ft_balance_of_after: U128 = worker
+        .view(underlying.id(), "ft_balance_of")
+        .args_json(json!({
+            "account_id": alice.id(),
+        }))
+        .await?
+        .json()?;
+
+    let bob_ft_balance_of_after: U128 = worker
+        .view(underlying.id(), "ft_balance_of")
+        .args_json(json!({
+            "account_id": bob.id(),
+        }))
+        .await?
+        .json()?;
+
+    assert_eq!(
+        bank_ft_balance_of_before.0 + taxes.0,
+        bank_ft_balance_of_after.0
+    );
+    assert_eq!(
+        alice_ft_balance_of_before.0 + amount_to_transfer_to_alice.0,
+        alice_ft_balance_of_after.0
+    );
+    assert_eq!(
+        bob_ft_balance_of_before.0 + amount_to_transfer_to_bob.0,
+        bob_ft_balance_of_after.0
+    );
 
     Ok(())
 }

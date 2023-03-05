@@ -18,7 +18,6 @@ pub trait Upgradable {
     fn upgrade(self);
 }
 
-
 #[near_bindgen]
 impl Upgradable for Multisender {
     #[init(ignore_state)]

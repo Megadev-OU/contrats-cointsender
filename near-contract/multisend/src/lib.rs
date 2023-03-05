@@ -1,11 +1,11 @@
 pub mod admin;
-mod upgrade;
 mod ft_multisend;
+mod upgrade;
 
-use near_sdk::{env, near_bindgen, AccountId, require, Balance, Promise};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::json_types::U128;
 use near_sdk::env::attached_deposit;
+use near_sdk::json_types::U128;
+use near_sdk::{env, near_bindgen, require, AccountId, Balance, Promise};
 
 pub type WBalance = U128;
 
@@ -32,7 +32,6 @@ pub struct Multisender {
     pub admin: AccountId,
 }
 
-
 impl Default for Multisender {
     fn default() -> Self {
         env::panic_str("Token contract should be initialized before usage")
@@ -54,7 +53,11 @@ impl Multisender {
     }
 
     #[payable]
-    pub fn multi_send_from_attached_deposit_near(&mut self, recipients: Vec<AccountId>, amounts: Vec<WBalance>) {
+    pub fn multi_send_from_attached_deposit_near(
+        &mut self,
+        recipients: Vec<AccountId>,
+        amounts: Vec<WBalance>,
+    ) {
         require!(recipients.len() > 0);
 
         let mut final_amount = 0 as Balance;
@@ -62,7 +65,7 @@ impl Multisender {
 
         for (recipient, amount) in recipients.iter().zip(amounts.iter()) {
             // non zero amounts and correct recipient address
-            require!(*amount > U128(0));
+            require!(amount.0 > 0);
             assert!(
                 env::is_valid_account_id(recipient.as_bytes()),
                 "Account @{} is invalid",
@@ -85,18 +88,21 @@ impl Multisender {
 
         let mut logs: String = "".to_string();
 
-        for (recipient, amount) in recipients.iter().zip(amounts.iter()){
-            let log = format!("Sending {} yNEAR (~{} NEAR) to account @{}\n", amount.0, yton(amount.0), recipient);
+        for (recipient, amount) in recipients.iter().zip(amounts.iter()) {
+            let log = format!(
+                "Sending {} yNEAR (~{} NEAR) to account @{}\n",
+                amount.0,
+                yton(amount.0),
+                recipient
+            );
             logs.push_str(&log);
 
-            Promise::new(recipient.clone())
-                .transfer(amount.0);
+            Promise::new(recipient.clone()).transfer(amount.0);
         }
 
         env::log_str(&*format!("Done!\n{}", logs));
 
         // paying out the taxes for the bank account in NEAR token in yocto precision
-        Promise::new(self.bank.clone())
-            .transfer(taxes);
+        Promise::new(self.bank.clone()).transfer(taxes);
     }
 }
