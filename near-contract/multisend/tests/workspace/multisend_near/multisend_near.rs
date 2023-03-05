@@ -52,9 +52,9 @@ async fn test_successful_multisend_near() -> anyhow::Result<()> {
         .await?
         .into_result()?;
 
-    let bank_balance_before = worker.view_account(&bank.id()).await?;
-    let alice_balance_before = worker.view_account(&alice.id()).await?;
-    let bob_balance_before = worker.view_account(&bob.id()).await?;
+    let bank_balance_before = worker.view_account(bank.id()).await?;
+    let alice_balance_before = worker.view_account(alice.id()).await?;
+    let bob_balance_before = worker.view_account(bob.id()).await?;
 
     let amount_to_transfer_to_alice: WBalance = U128::from(100000000000000000000000000); // 100 NEAR
     let amount_to_transfer_to_bob: WBalance = U128::from(100000000000000000000000000); // 100 NEAR
@@ -79,9 +79,9 @@ async fn test_successful_multisend_near() -> anyhow::Result<()> {
 
     assert!(multisend_transaction.is_success());
 
-    let bank_balance_after = worker.view_account(&bank.id()).await?;
-    let alice_balance_after = worker.view_account(&alice.id()).await?;
-    let bob_balance_after = worker.view_account(&bob.id()).await?;
+    let bank_balance_after = worker.view_account(bank.id()).await?;
+    let alice_balance_after = worker.view_account(alice.id()).await?;
+    let bob_balance_after = worker.view_account(bob.id()).await?;
 
     assert_eq!(
         bank_balance_before.balance + taxes.0,

@@ -58,7 +58,7 @@ impl Multisender {
         recipients: Vec<AccountId>,
         amounts: Vec<WBalance>,
     ) {
-        require!(recipients.len() > 0);
+        require!(!recipients.is_empty());
 
         let mut final_amount = 0 as Balance;
         let mut taxes = 0 as Balance;
@@ -68,8 +68,7 @@ impl Multisender {
             require!(amount.0 > 0);
             assert!(
                 env::is_valid_account_id(recipient.as_bytes()),
-                "Account @{} is invalid",
-                recipient
+                "Account @{recipient} is invalid"
             );
 
             let fee = amount.0 * self.percentage / 1000;
@@ -100,7 +99,7 @@ impl Multisender {
             Promise::new(recipient.clone()).transfer(amount.0);
         }
 
-        env::log_str(&*format!("Done!\n{}", logs));
+        env::log_str(&format!("Done!\n{logs}"));
 
         // paying out the taxes for the bank account in NEAR token in yocto precision
         Promise::new(self.bank.clone()).transfer(taxes);

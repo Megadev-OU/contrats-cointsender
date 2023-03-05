@@ -1,7 +1,7 @@
 use crate::*;
 use near_contract_standards::fungible_token::receiver::FungibleTokenReceiver;
 use near_sdk::json_types::U128;
-use near_sdk::serde_json::json;
+
 use near_sdk::{
     borsh::{self, BorshDeserialize, BorshSerialize},
     ext_contract, log, near_bindgen,
@@ -88,7 +88,7 @@ impl FungibleTokenReceiver for Multisender {
             );
         }
 
-        Promise::new(transfers.token_id.clone())
+        Promise::new(transfers.token_id)
             .function_call(
                 "ft_transfer".to_string(),
                 // Arguments are encoded as a JSON string
