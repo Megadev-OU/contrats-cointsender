@@ -190,7 +190,7 @@ async fn test_multisend_fail_insufficient_balance_for_one_recipient() -> anyhow:
 
     let amount_to_transfer_to_alice: WBalance = U128::from(100000000000000000000000000000); // 100000 tokens
     let amount_to_transfer_to_bob: WBalance = U128::from(10000000000000000000000000); // 10 tokens
-    let taxes: WBalance =
+    let _taxes: WBalance =
         U128::from((amount_to_transfer_to_alice.0 + amount_to_transfer_to_bob.0) * 10 / 1000);
 
     let msg = json!(
@@ -203,9 +203,9 @@ async fn test_multisend_fail_insufficient_balance_for_one_recipient() -> anyhow:
          "amount": amount_to_transfer_to_bob.0.to_string()}
     ]
     })
-        .to_string();
+    .to_string();
 
-    let multisend_transaction = owner
+    let _multisend_transaction = owner
         .call(underlying.id(), "ft_transfer_call")
         .args_json(json!({
             "receiver_id": multisend_near_account.id(),
@@ -241,18 +241,9 @@ async fn test_multisend_fail_insufficient_balance_for_one_recipient() -> anyhow:
         .await?
         .json()?;
 
-    assert_eq!(
-        bank_ft_balance_of_before.0,
-        bank_ft_balance_of_after.0
-    );
-    assert_eq!(
-        alice_ft_balance_of_before.0,
-        alice_ft_balance_of_after.0
-    );
-    assert_eq!(
-        bob_ft_balance_of_before.0,
-        bob_ft_balance_of_after.0
-    );
+    assert_eq!(bank_ft_balance_of_before.0, bank_ft_balance_of_after.0);
+    assert_eq!(alice_ft_balance_of_before.0, alice_ft_balance_of_after.0);
+    assert_eq!(bob_ft_balance_of_before.0, bob_ft_balance_of_after.0);
 
     Ok(())
 }

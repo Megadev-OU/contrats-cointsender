@@ -58,7 +58,7 @@ async fn test_multisend_fail_insufficient_balance_in_attached_deposit() -> anyho
 
     let amount_to_transfer_to_alice: WBalance = U128::from(100000000000000000000000000); // 100 NEAR
     let amount_to_transfer_to_bob: WBalance = U128::from(100000000000000000000000000); // 100 NEAR
-    let taxes: WBalance =
+    let _taxes: WBalance =
         U128::from((amount_to_transfer_to_alice.0 + amount_to_transfer_to_bob.0) * 10 / 1000);
 
     let multisend_near_account = multisend_fixture(&bank, &owner, &worker).await?;
@@ -83,18 +83,9 @@ async fn test_multisend_fail_insufficient_balance_in_attached_deposit() -> anyho
     let alice_balance_after = worker.view_account(alice.id()).await?;
     let bob_balance_after = worker.view_account(bob.id()).await?;
 
-    assert_eq!(
-        bank_balance_before.balance,
-        bank_balance_after.balance
-    );
-    assert_eq!(
-        alice_balance_before.balance,
-        alice_balance_after.balance
-    );
-    assert_eq!(
-        bob_balance_before.balance,
-        bob_balance_after.balance
-    );
+    assert_eq!(bank_balance_before.balance, bank_balance_after.balance);
+    assert_eq!(alice_balance_before.balance, alice_balance_after.balance);
+    assert_eq!(bob_balance_before.balance, bob_balance_after.balance);
 
     Ok(())
 }
