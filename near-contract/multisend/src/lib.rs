@@ -66,10 +66,7 @@ impl Multisender {
         for (recipient, amount) in recipients.iter().zip(amounts.iter()) {
             // non zero amounts and correct recipient address
             require!(amount.0 > 0);
-            assert!(
-                env::is_valid_account_id(recipient.as_bytes()),
-                "Account @{recipient} is invalid"
-            );
+            require!(env::is_valid_account_id(recipient.as_bytes()));
 
             let fee = amount.0 * self.percentage / 1000;
             taxes += fee;

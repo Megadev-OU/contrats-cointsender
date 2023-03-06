@@ -1,1 +1,3 @@
-mod multisend_near;
+mod multisend_success_near;
+mod multisend_fail_insufficient_balance_for_one_recipient;
+mod multisend_fail_insufficient_balance_in_attached_deposit;

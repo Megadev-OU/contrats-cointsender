@@ -70,8 +70,15 @@ impl FungibleTokenReceiver for Multisender {
 
         // Distribute the tokens to the recipients
         for transfer in transfers.transfers {
-            let recipient = transfer.recipient;
+            // non zero amounts and correct recipient address
             let transfer_amount = transfer.amount;
+
+            require!(transfer_amount.0 > 0);
+
+            let recipient = transfer.recipient;
+
+            require!(env::is_valid_account_id(recipient.as_bytes()));
+
             Promise::new(transfers.token_id.clone()).function_call(
                 "ft_transfer".to_string(),
                 // Arguments are encoded as a JSON string
