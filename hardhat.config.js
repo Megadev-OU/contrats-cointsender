@@ -14,10 +14,14 @@ let realAccounts = [
         privateKey: `${process.env.PRIVATE_KEY}`,
         balance: forkingAccountsBalance,
     },
+    {
+        privateKey: `${process.env.SECOND_PRIVATE_KEY}`,
+        balance: forkingAccountsBalance,
+    },
 ];
 
 module.exports = {
-    defaultNetwork: "sapphire",
+    defaultNetwork: "hardhat",
     namedAccounts: {
         deployer: {
             default: 0
