@@ -10,6 +10,10 @@ package-lock.json
 cache
 artifacts
 deployments
-near_contract/multisend/Cargo.lock
+near-contract/multisend/Cargo.lock
+near-contract/mock-token/Cargo.lock
+near-contract/Cargo.lock
 .idea
-near_contract/multisend/target
+near-contract/multisend/target
+near-contract/mock-token/target
+near-contract/target
